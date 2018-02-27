@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use App\UserRegistrationLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -104,6 +106,11 @@ class RegisterController extends Controller
             $user->confirm = 1;
             $user->token = '';
             $user->save();
+
+            UserRegistrationLog::create([
+                'user_id' => $user->id,
+                'registered_at' => Carbon::now()->toDateTimeString(),
+            ]);
 
             return redirect(route('login'))->with('status', 'Activated');
         }

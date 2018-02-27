@@ -26,4 +26,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function userRegistrationLog()
+    {
+        return $this->hasOne(UserRegistrationLog::class, 'user_id', 'id');
+    }
 }
